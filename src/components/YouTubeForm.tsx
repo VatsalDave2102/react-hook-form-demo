@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 
 const YouTubeForm = () => {
 	const form = useForm();
 
 	// register lets us register on form fields
-	const { register } = form;
+	const { register, control } = form;
 
 	// register itself return 4 properties, rather than this destructure register on the input itself
 	// const { name, ref, onBlur, onChange } = register("username");
@@ -25,6 +26,7 @@ const YouTubeForm = () => {
 					</button>
 				</div>
 			</form>
+			<DevTool control={control} />
 		</div>
 	);
 };

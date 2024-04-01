@@ -1,4 +1,7 @@
+import { useForm } from "react-hook-form";
+
 const YouTubeForm = () => {
+	const form = useForm();
 	return (
 		<div className="container mx-auto pt-10">
 			<form className="flex flex-col gap-2">

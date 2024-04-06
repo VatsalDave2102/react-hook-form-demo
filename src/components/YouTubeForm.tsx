@@ -6,8 +6,16 @@ type FormValues = {
 	email: string;
 	channel: string;
 };
+
 const YouTubeForm = () => {
-	const form = useForm<FormValues>();
+	const form = useForm<FormValues>({
+		// adding default values to form
+		defaultValues: {
+			username: "",
+			email: "",
+			channel: "",
+		},
+	});
 
 	// register lets us register on form fields
 	const { register, control, handleSubmit } = form;

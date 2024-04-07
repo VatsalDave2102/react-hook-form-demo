@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 type FormValues = {
@@ -6,6 +6,10 @@ type FormValues = {
 	email: string;
 	channel: string;
 	social: { twitter: string; facebook: string };
+	phoneNumbers: string[];
+	phNumbers: {
+		number: string;
+	}[];
 };
 
 const YouTubeForm = () => {
@@ -15,6 +19,12 @@ const YouTubeForm = () => {
 			username: "",
 			email: "",
 			channel: "",
+			social: {
+				twitter: "",
+				facebook: "",
+			},
+			phoneNumbers: ["", ""],
+			phNumbers: [{ number: "" }],
 		},
 	});
 
@@ -23,6 +33,12 @@ const YouTubeForm = () => {
 	// formState has many properties we are using it here to show error messages
 	const { register, control, handleSubmit, formState } = form;
 	const { errors } = formState;
+
+	// useFieldArray to add dynamic to fields
+	const { fields, append, remove } = useFieldArray({
+		name: "phNumbers",
+		control,
+	});
 
 	const onSubmit = (formdata: FormValues) => {
 		console.log("Form submitted", formdata);
@@ -37,7 +53,7 @@ const YouTubeForm = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				noValidate
 			>
-				<div className="form-control">
+				<div className="form-control flex flex-col">
 					<label htmlFor="username">Username</label>
 					<input
 						type="text"
@@ -57,7 +73,7 @@ const YouTubeForm = () => {
 					/>
 					<p className="text-red-500">{errors.username?.message}</p>
 				</div>
-				<div className="form-control">
+				<div className="form-control flex flex-col">
 					<label htmlFor="email">Email</label>
 					<input
 						type="email"
@@ -72,7 +88,7 @@ const YouTubeForm = () => {
 					/>
 					<p className="text-red-500">{errors.email?.message}</p>
 				</div>
-				<div className="form-control">
+				<div className="form-control flex flex-col">
 					<label htmlFor="channel">Channel</label>
 					<input
 						type="text"
@@ -80,6 +96,82 @@ const YouTubeForm = () => {
 						{...register("channel", { required: "Username is required" })}
 					/>
 					<p className="text-red-500">{errors.channel?.message}</p>
+				</div>
+				<div className="form-control flex flex-col">
+					<label htmlFor="twitter">Twitter</label>
+					<input
+						type="text"
+						id="twitter"
+						{...register("social.twitter", {
+							required: "Twitter handler is required",
+						})}
+					/>
+					<p className="text-red-500">{errors.social?.twitter?.message}</p>
+				</div>
+				<div className="form-control flex flex-col">
+					<label htmlFor="facebook">Facebook</label>
+					<input
+						type="text"
+						id="facebook"
+						{...register("social.facebook", {
+							required: "Facebook username is required",
+						})}
+					/>
+					<p className="text-red-500">{errors.social?.facebook?.message}</p>
+				</div>
+				<div className="form-control flex flex-col">
+					<label htmlFor="primary-phone">Primary phone number</label>
+					<input
+						type="text"
+						id="primary-phone"
+						{...register("phoneNumbers.0", {
+							required: "Primary phone is required",
+						})}
+					/>
+					<p className="text-red-500">
+						{errors.phoneNumbers ? errors.phoneNumbers[0]?.message : ""}
+					</p>
+				</div>
+				<div className="form-control flex flex-col">
+					<label htmlFor="secondary-phone">Secondary phone number</label>
+					<input
+						type="text"
+						id="secondary-phone"
+						{...register("phoneNumbers.1", {
+							required: "Secondary phone is required",
+						})}
+					/>
+					<p className="text-red-500">
+						{errors.phoneNumbers ? errors.phoneNumbers[1]?.message : ""}
+					</p>
+				</div>
+
+				<label htmlFor="">List of phone numbers</label>
+				<div>
+					{fields.map((field, index) => {
+						return (
+							<div
+								className="form-control flex flex-col gap-y-4"
+								key={field.id}
+							>
+								<input
+									type="text"
+									className="mb-2"
+									{...register(`phNumbers.${index}.number` as const)}
+								/>
+								{index > 0 && (
+									<button type="button" onClick={() => remove(index)}>
+										Remove phone number
+									</button>
+								)}
+							</div>
+						);
+					})}
+
+					{/* adding append function to add another phonen number field */}
+					<button type="button" onClick={() => append({ number: "" })}>
+						Add phone number
+					</button>
 				</div>
 				<div>
 					<button className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500">

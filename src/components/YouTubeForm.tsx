@@ -10,6 +10,8 @@ type FormValues = {
 	phNumbers: {
 		number: string;
 	}[];
+	age: number;
+	dob: Date;
 };
 
 const YouTubeForm = () => {
@@ -25,6 +27,8 @@ const YouTubeForm = () => {
 			},
 			phoneNumbers: ["", ""],
 			phNumbers: [{ number: "" }],
+			age: 0,
+			dob: new Date(),
 		},
 	});
 
@@ -93,7 +97,7 @@ const YouTubeForm = () => {
 					<input
 						type="text"
 						id="channel"
-						{...register("channel", { required: "Username is required" })}
+						{...register("channel", { required: "Channel is required" })}
 					/>
 					<p className="text-red-500">{errors.channel?.message}</p>
 				</div>
@@ -172,6 +176,30 @@ const YouTubeForm = () => {
 					<button type="button" onClick={() => append({ number: "" })}>
 						Add phone number
 					</button>
+				</div>
+				<div className="form-control flex flex-col">
+					<label htmlFor="age">Age</label>
+					<input
+						type="text"
+						id="age"
+						{...register("age", {
+							valueAsNumber: true, //to get value as a number
+							required: "Age is required",
+						})}
+					/>
+					<p className="text-red-500">{errors.age?.message}</p>
+				</div>
+				<div className="form-control flex flex-col">
+					<label htmlFor="dob">Date of birth</label>
+					<input
+						type="date"
+						id="dob"
+						{...register("dob", {
+							valueAsDate: true,
+							required: "Date of birth is required",
+						})}
+					/>
+					<p className="text-red-500">{errors.dob?.message}</p>
 				</div>
 				<div>
 					<button className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500">

@@ -1,5 +1,6 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 
 type FormValues = {
 	username: string;
@@ -35,7 +36,7 @@ const YouTubeForm = () => {
 	// register lets us register on form fields
 	// handlerSubmit takes a submit method, it validate input and passes the values to submit method
 	// formState has many properties we are using it here to show error messages
-	const { register, control, handleSubmit, formState } = form;
+	const { register, control, handleSubmit, formState, watch } = form;
 	const { errors } = formState;
 
 	// useFieldArray to add dynamic to fields
@@ -48,10 +49,21 @@ const YouTubeForm = () => {
 		console.log("Form submitted", formdata);
 	};
 
+	// watch helps us to watch the changed value, it accepts a field name or an array of fields, if dont call with any value, it observers the whole form field values
+	const watchUsername = watch("username");
+
+	// if you want to perform a side effect using watch, call watch inside a useEffect and pass a function to watch
+
+	useEffect(() => {
+		watch((value) => {
+			console.log(value);
+		});
+	}, [watch]);
 	// register itself return 4 properties, rather than this destructure register on the input itself
 	// const { name, ref, onBlur, onChange } = register("username");
 	return (
 		<div className="container mx-auto pt-10">
+			<h1>Watched value: {watchUsername}</h1>
 			<form
 				className="flex flex-col gap-2"
 				onSubmit={handleSubmit(onSubmit)}

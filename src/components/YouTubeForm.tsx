@@ -31,6 +31,7 @@ const YouTubeForm = () => {
 			age: 0,
 			dob: new Date(),
 		},
+		mode: "onBlur",
 	});
 
 	// register lets us register on form fields

@@ -1,4 +1,4 @@
-import { useFieldArray, useForm } from "react-hook-form";
+import { FieldErrors, useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 // import { useEffect } from "react";
 
@@ -59,6 +59,10 @@ const YouTubeForm = () => {
 		console.log("Form submitted", formdata);
 	};
 
+	const onError = (error: FieldErrors<FormValues>) => {
+		console.log("Form Errors", error);
+	};
+
 	// getValues returns the current values to form fields
 	const handleGetValues = () => {
 		console.log("Get values", getValues());
@@ -87,11 +91,11 @@ const YouTubeForm = () => {
 	// register itself return 4 properties, rather than this destructure register on the input itself
 	// const { name, ref, onBlur, onChange } = register("username");
 	return (
-		<div className=" bg-sky-200">
+		<div className="p-10 bg-sky-200">
 			<h1>Watched value: {watchUsername}</h1>
 			<form
 				className="flex flex-col gap-2"
-				onSubmit={handleSubmit(onSubmit)}
+				onSubmit={handleSubmit(onSubmit, onError)}
 				noValidate
 			>
 				<div className="form-control flex flex-col">
@@ -145,7 +149,7 @@ const YouTubeForm = () => {
 						id="twitter"
 						{...register("social.twitter", {
 							required: "Twitter handler is required",
-							disabled: watch("channel") === "",
+							disabled: watch("channel") === "", //disabling twitter field until channel field has no input
 						})}
 					/>
 					<p className="text-red-500">{errors.social?.twitter?.message}</p>

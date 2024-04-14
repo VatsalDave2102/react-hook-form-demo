@@ -1,6 +1,6 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 type FormValues = {
 	username: string;
@@ -36,8 +36,18 @@ const YouTubeForm = () => {
 	// register lets us register on form fields
 	// handlerSubmit takes a submit method, it validate input and passes the values to submit method
 	// formState has many properties we are using it here to show error messages
-	const { register, control, handleSubmit, formState, watch } = form;
-	const { errors } = formState;
+	const {
+		register,
+		control,
+		handleSubmit,
+		formState,
+		watch,
+		getValues,
+		setValue,
+	} = form;
+	const { errors, touchedFields, dirtyFields, isDirty } = formState;
+
+	console.log(touchedFields, dirtyFields, isDirty);
 
 	// useFieldArray to add dynamic to fields
 	const { fields, append, remove } = useFieldArray({
@@ -49,20 +59,35 @@ const YouTubeForm = () => {
 		console.log("Form submitted", formdata);
 	};
 
+	// getValues returns the current values to form fields
+	const handleGetValues = () => {
+		console.log("Get values", getValues());
+	};
+
+	// setValues sets the value to the field passed to it, but it doesn't validates or changes dirty/touched states, to do that we need to pass an object
+	const handleSetValues = () => {
+		setValue("username", "", {
+			shouldValidate: true,
+			shouldDirty: true,
+			shouldTouch: true,
+		});
+	};
+
 	// watch helps us to watch the changed value, it accepts a field name or an array of fields, if dont call with any value, it observers the whole form field values
 	const watchUsername = watch("username");
 
 	// if you want to perform a side effect using watch, call watch inside a useEffect and pass a function to watch
 
-	useEffect(() => {
-		watch((value) => {
-			console.log(value);
-		});
-	}, [watch]);
+	// useEffect(() => {
+	// 	watch((value) => {
+	// 		console.log(value);
+	// 	});
+	// }, [watch]);
+
 	// register itself return 4 properties, rather than this destructure register on the input itself
 	// const { name, ref, onBlur, onChange } = register("username");
 	return (
-		<div className="container mx-auto pt-10">
+		<div className=" bg-sky-200">
 			<h1>Watched value: {watchUsername}</h1>
 			<form
 				className="flex flex-col gap-2"
@@ -213,9 +238,23 @@ const YouTubeForm = () => {
 					/>
 					<p className="text-red-500">{errors.dob?.message}</p>
 				</div>
-				<div>
+				<div className="flex justify-start gap-x-5">
 					<button className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500">
 						Submit
+					</button>
+					<button
+						type="button"
+						onClick={handleGetValues}
+						className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500"
+					>
+						Get values
+					</button>
+					<button
+						type="button"
+						onClick={handleSetValues}
+						className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500"
+					>
+						Set values
 					</button>
 				</div>
 			</form>

@@ -31,7 +31,7 @@ const YouTubeForm = () => {
 			age: 0,
 			dob: new Date(),
 		},
-		mode: "onBlur",
+		mode: "onBlur", //to add validation mode i.e. when validation should work
 	});
 
 	// register lets us register on form fields
@@ -46,6 +46,7 @@ const YouTubeForm = () => {
 		getValues,
 		setValue,
 		reset,
+		trigger,
 	} = form;
 	const {
 		errors,
@@ -301,6 +302,13 @@ const YouTubeForm = () => {
 						className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500"
 					>
 						Set values
+					</button>
+					<button
+						type="button"
+						onClick={() => trigger()} // this will trigger validation for all fields, if validation is required for specific field, pass it as argument
+						className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500"
+					>
+						Validate
 					</button>
 				</div>
 			</form>

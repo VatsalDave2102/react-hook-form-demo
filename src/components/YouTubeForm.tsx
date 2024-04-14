@@ -44,10 +44,24 @@ const YouTubeForm = () => {
 		watch,
 		getValues,
 		setValue,
+		reset,
 	} = form;
-	const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
+	const {
+		errors,
+		touchedFields,
+		dirtyFields,
+		isDirty,
+		isValid,
+		isSubmitting,
+		isSubmitted,
+		isSubmitSuccessful,
+		submitCount,
+	} = formState;
 
 	console.log(touchedFields, dirtyFields, isDirty);
+
+	// to show submit states, while submitting, after submitting and successful submit counts
+	console.log(isSubmitting, isSubmitted, isSubmitSuccessful, submitCount);
 
 	// useFieldArray to add dynamic to fields
 	const { fields, append, remove } = useFieldArray({
@@ -246,9 +260,16 @@ const YouTubeForm = () => {
 				<div className="flex justify-start gap-x-5">
 					<button
 						className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500 disabled:bg-blue-300"
-						disabled={!isDirty || !isValid}
+						disabled={!isDirty || !isValid || isSubmitting}
 					>
 						Submit
+					</button>
+					<button
+						type="reset"
+						onClick={() => reset()}
+						className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500"
+					>
+						Reset
 					</button>
 					<button
 						type="button"

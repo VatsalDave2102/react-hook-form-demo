@@ -145,6 +145,7 @@ const YouTubeForm = () => {
 						id="twitter"
 						{...register("social.twitter", {
 							required: "Twitter handler is required",
+							disabled: watch("channel") === "",
 						})}
 					/>
 					<p className="text-red-500">{errors.social?.twitter?.message}</p>

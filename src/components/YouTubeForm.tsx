@@ -45,7 +45,7 @@ const YouTubeForm = () => {
 		getValues,
 		setValue,
 	} = form;
-	const { errors, touchedFields, dirtyFields, isDirty } = formState;
+	const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
 
 	console.log(touchedFields, dirtyFields, isDirty);
 
@@ -244,7 +244,10 @@ const YouTubeForm = () => {
 					<p className="text-red-500">{errors.dob?.message}</p>
 				</div>
 				<div className="flex justify-start gap-x-5">
-					<button className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500">
+					<button
+						className="p-2 bg-blue-900 text-white rounded-md hover:bg-blue-500 disabled:bg-blue-300"
+						disabled={!isDirty || !isValid}
+					>
 						Submit
 					</button>
 					<button

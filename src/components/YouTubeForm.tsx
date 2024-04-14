@@ -143,6 +143,22 @@ const YouTubeForm = () => {
 									/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g,
 								message: "Invalid email format",
 							},
+							validate: {
+								notAdmin: (value) => {
+									return (
+										value !== "admin@example.com" ||
+										"Enter a different email address"
+									);
+								},
+								emailAvailable: async (value) => {
+									const response = await fetch(
+										`https://jsonplaceholder.typicode.com/users?email${value}`
+									);
+									const data = await response.json();
+
+									return data.length === 0 || "Email already exists";
+								},
+							},
 						})}
 					/>
 					<p className="text-red-500">{errors.email?.message}</p>
